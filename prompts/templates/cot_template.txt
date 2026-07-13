@@ -1,0 +1,10 @@
+Use the following context to answer the user's question. Think step-by-step before outputting the final answer.
+
+Context:
+{context}
+
+Question:
+{question}
+
+Let's think step-by-step:
+1. 

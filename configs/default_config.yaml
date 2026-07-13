@@ -1,0 +1,17 @@
+# LLM Client Settings
+llm:
+  provider: "gemini"               # Options: "gemini", "openai"
+  model: "gemini-2.5-flash"       # Provider-specific model name
+  temperature: 0.2
+  max_tokens: 1024
+  top_p: 0.95
+
+# Prompt Configurations
+prompts:
+  system_prompt_path: "prompts/system_prompts/default.txt"
+  user_template_path: "prompts/templates/cot_template.txt"
+
+# Evaluation Parameters
+evaluation:
+  metric: "exact_match"            # Options: "exact_match", "llm_judge"
+  judge_model: "gemini-2.5-flash"
