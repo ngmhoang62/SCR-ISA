@@ -1,0 +1,49 @@
+================================================================================
+Laptop - Train:
+- Total: 2358
+- Positive: 987
+- Negative: 866
+- Neutral: 460
+- Conflict: 45
+- Implicit: 716
+
+Laptop - Test:
+- Total: 654
+- Positive: 341
+- Negative: 128
+- Neutral: 169
+- Conflict: 16
+- Implicit: 175
+
+Laptop - Combined:
+- Total: 3012
+- Positive: 1328
+- Negative: 994
+- Neutral: 629
+- Conflict: 61
+- Implicit: 891
+================================================================================
+Restaurant - Train:
+- Total: 3693
+- Positive: 2164
+- Negative: 805
+- Neutral: 633
+- Conflict: 91
+- Implicit: 1030
+
+Restaurant - Test:
+- Total: 1134
+- Positive: 728
+- Negative: 196
+- Neutral: 196
+- Conflict: 14
+- Implicit: 267
+
+Restaurant - Combined:
+- Total: 4827
+- Positive: 2892
+- Negative: 1001
+- Neutral: 829
+- Conflict: 105
+- Implicit: 1297
+================================================================================
