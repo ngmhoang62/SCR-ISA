@@ -47,3 +47,11 @@ Restaurant - Combined:
 - Conflict: 105
 - Implicit: 1297
 ================================================================================
+Vietnamese Technology - Test:
+- Total: 302
+- Positive: 42
+- Negative: 260
+- Neutral: 0
+- Conflict: 0
+- Implicit: 0
+================================================================================

@@ -43,6 +43,37 @@ def parse_xml_stats(file_path: str) -> Dict[str, int]:
             
     return stats
 
+def parse_csv_stats(file_path: str) -> Dict[str, int]:
+    """Parses a dataset CSV file and counts polarity properties."""
+    stats = {
+        "Total": 0,
+        "Positive": 0,
+        "Negative": 0,
+        "Neutral": 0,
+        "Conflict": 0,
+        "Implicit": 0
+    }
+    
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"Dataset CSV file not found: {file_path}")
+        
+    import csv
+    with open(file_path, "r", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            stats["Total"] += 1
+            polarity = row.get("polarity", "").strip().lower()
+            if polarity == "positive":
+                stats["Positive"] += 1
+            elif polarity == "negative":
+                stats["Negative"] += 1
+            elif polarity == "neutral":
+                stats["Neutral"] += 1
+            elif polarity == "conflict":
+                stats["Conflict"] += 1
+                
+    return stats
+
 def aggregate_stats(train_stats: Dict[str, int], test_stats: Dict[str, int]) -> Dict[str, int]:
     """Sums count dictionaries from different splits to produce combined metrics."""
     return {key: train_stats[key] + test_stats[key] for key in train_stats}
@@ -69,6 +100,9 @@ def main():
     restaurants_train = os.path.join(restaurants_dir, "Restaurants_Train_v2_Implicit_Labeled.xml")
     restaurants_test = os.path.join(restaurants_dir, "Restaurants_Test_Gold_Implicit_Labeled.xml")
 
+    vietnamese_dir = os.path.join("data", "inputs", "vietnamese")
+    vietnamese_test = os.path.join(vietnamese_dir, "technologies_implicit_test.csv")
+
     # Compute statistics for laptops
     laptop_train_stats = parse_xml_stats(laptops_train)
     laptop_test_stats = parse_xml_stats(laptops_test)
@@ -78,6 +112,9 @@ def main():
     restaurant_train_stats = parse_xml_stats(restaurants_train)
     restaurant_test_stats = parse_xml_stats(restaurants_test)
     restaurant_combined_stats = aggregate_stats(restaurant_train_stats, restaurant_test_stats)
+
+    # Compute statistics for Vietnamese Technology
+    vietnamese_stats = parse_csv_stats(vietnamese_test)
 
     # Build the report content
     report_lines = [
@@ -93,6 +130,8 @@ def main():
         format_split_report("Restaurant - Test", restaurant_test_stats),
         "",
         format_split_report("Restaurant - Combined", restaurant_combined_stats),
+        "=" * 80,
+        format_split_report("Vietnamese Technology - Test", vietnamese_stats),
         "=" * 80
     ]
     report_content = "\n".join(report_lines) + "\n"
