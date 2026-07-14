@@ -29,9 +29,13 @@ class RestaurantPromptBuilder:
         # Save to debug output
         paths = self.config.get('paths', {})
         system_debug_path = paths.get('debug_system_prompt', os.path.join("data", "outputs", "debug_system_prompt.txt"))
-        os.makedirs(os.path.dirname(system_debug_path), exist_ok=True)
+        if not os.path.exists(os.path.dirname(system_debug_path)):
+            os.makedirs(os.path.dirname(system_debug_path), exist_ok=True)
+        
         with open(system_debug_path, 'w', encoding='utf-8') as f:
             f.write(prompt)
+            
+        logger.info(f"[INFO] Compiled and saved system prompt to {system_debug_path}")
             
         return prompt
 
@@ -73,10 +77,16 @@ IMPORTANT: Base your analysis SOLELY on comments about {target}. Ignore unrelate
 
         paths = self.config.get('paths', {})
         user_debug_path = paths.get('debug_user_prompt', os.path.join("data", "outputs", "debug_user_prompt.txt"))
-        os.makedirs(os.path.dirname(user_debug_path), exist_ok=True)
+        if not os.path.exists(os.path.dirname(user_debug_path)):
+            os.makedirs(os.path.dirname(user_debug_path), exist_ok=True)
+            
         with open(user_debug_path, 'w', encoding='utf-8') as f:
             f.write(user_prompt)
-
+            
+        if getattr(self, '_first_user_prompt_logged', False) is False:
+            logger.info(f"[INFO] Writing ongoing debug user prompts to {user_debug_path}")
+            self._first_user_prompt_logged = True
+            
         return {
             "system": self.system_prompt,
             "user": user_prompt

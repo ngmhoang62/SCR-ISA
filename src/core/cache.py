@@ -42,8 +42,12 @@ class HybridRestaurantCache:
         self.few_shot_examples = self._load_few_shot_json()
 
     def _init_directories(self):
-        os.makedirs(self.cache_dir, exist_ok=True)
-        os.makedirs(self.few_shot_cache_dir, exist_ok=True)
+        if not os.path.exists(self.cache_dir):
+            os.makedirs(self.cache_dir, exist_ok=True)
+            logger.info(f"[INFO] Created sentiment cache directory: {self.cache_dir}")
+        if not os.path.exists(self.few_shot_cache_dir):
+            os.makedirs(self.few_shot_cache_dir, exist_ok=True)
+            logger.info(f"[INFO] Created few-shot cache directory: {self.few_shot_cache_dir}")
 
     def _handle_cache_clearing(self):
         if self.config.get('force_clear_sentiment_cache', False):
@@ -93,7 +97,6 @@ class HybridRestaurantCache:
         try:
             with open(self.few_shot_cache_path, 'wb') as f:
                 pickle.dump(self.few_shot_cache, f)
-            logger.info(f"[INFO] Updated and saved few-shot cache (Total cached queries: {len(self.few_shot_cache)}).")
         except Exception as e:
             logger.warning(f"[WARNING] Few-shot cache save error: {e}")
 

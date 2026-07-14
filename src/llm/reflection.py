@@ -22,7 +22,9 @@ class RestaurantSelfReflectionEngine:
         self.establish_expert_persona()
         
     def _init_directories(self):
-        os.makedirs(self.cache_dir, exist_ok=True)
+        if not os.path.exists(self.cache_dir):
+            os.makedirs(self.cache_dir, exist_ok=True)
+            logger.info(f"[INFO] Created reflection cache directory: {self.cache_dir}")
         
     def _handle_cache_clearing(self):
         if self.config.get('force_clear_reflection_cache', False):

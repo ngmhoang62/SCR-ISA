@@ -24,15 +24,24 @@ def load_config() -> dict:
     with open(config_path, 'r', encoding='utf-8') as f:
         config_data = yaml.safe_load(f)
         
-    return config_data.get('restaurant', {})
+    rest_config = config_data.get('restaurant', {})
+    
+    # Inject model name into paths to prevent overwriting across different models
+    model_name = rest_config.get("model", "gpt-4o")
+    paths = rest_config.get("paths", {})
+    for key, path in paths.items():
+        if isinstance(path, str) and "{model}" in path:
+            paths[key] = path.format(model=model_name)
+            
+    return rest_config
 
 def process_restaurant_sentiment_hybrid():
     """Main processing function for restaurant sentiment analysis"""
     config = load_config()
-    analyzer = HybridRestaurantSentimentAnalyzer(config)
-    
     paths = config.get('paths', {})
     setup_logger(paths.get('log_dir', 'logs'))
+    
+    analyzer = HybridRestaurantSentimentAnalyzer(config)
     
     input_csv_path = paths.get('input_csv', 'data/inputs/restaurants/restaurants_test_extracted.csv')
     output_csv_path = paths.get('output_csv', 'data/outputs/restaurant_sentiment_results.csv')
