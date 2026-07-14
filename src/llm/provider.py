@@ -11,17 +11,24 @@ class AzureLLMProvider:
         self.config = config
         load_dotenv()
         
-        api_key = os.getenv("OPENAI_API_KEY")
-        base_url = os.getenv("OPENAI_BASE_URL")
+        self.model_name = self.config.get('model', 'gpt-4o')
         
-        if not api_key or not base_url:
-            raise ValueError("OPENAI_API_KEY and OPENAI_BASE_URL must be set in the environment.")
+        if self.model_name == 'gpt-3.5-turbo':
+            api_key = os.getenv("OPENAI_API_KEY")
+            if not api_key:
+                raise ValueError("OPENAI_API_KEY must be set in the environment for standard OpenAI models.")
+            self.client = OpenAI(api_key=api_key)
+        else:
+            api_key = os.getenv("AZURE_OPENAI_API_KEY")
+            base_url = os.getenv("AZURE_OPENAI_BASE_URL")
             
-        self.client = OpenAI(
-            api_key=api_key,
-            base_url=base_url
-        )
-        self.model_name = self.config.get('model', 'gpt-4o-2024-08-06')
+            if not api_key or not base_url:
+                raise ValueError("AZURE_OPENAI_API_KEY and AZURE_OPENAI_BASE_URL must be set in the environment for Azure models.")
+                
+            self.client = OpenAI(
+                api_key=api_key,
+                base_url=base_url
+            )
         
     def call_api_with_retry(self, messages: List[Dict], temperature: float = None) -> Optional[str]:
         """Call API with retry logic"""

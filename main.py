@@ -101,7 +101,7 @@ def process_restaurant_sentiment_hybrid():
             
     # Trigger Evaluation
     from src.evaluation.evaluator import evaluate_results
-    eval_output_path = os.path.join(os.path.dirname(output_csv_path), "evaluation_results.txt")
+    eval_output_path = paths.get('eval_output', 'data/outputs/restaurants/evaluation_results.txt')
     evaluate_results(output_csv_path, eval_output_path)
             
     return results_df
