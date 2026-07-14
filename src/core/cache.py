@@ -64,12 +64,15 @@ class HybridRestaurantCache:
             if os.path.exists(self.sentiment_cache_path):
                 with open(self.sentiment_cache_path, 'rb') as f:
                     self.sentiment_cache = pickle.load(f)
+                    logger.info(f"[INFO] Loaded {len(self.sentiment_cache)} items from sentiment cache.")
             if os.path.exists(self.aspect_cache_path):
                 with open(self.aspect_cache_path, 'rb') as f:
                     self.aspect_patterns_cache = pickle.load(f)
+                    logger.info(f"[INFO] Loaded aspect patterns cache.")
             if os.path.exists(self.few_shot_cache_path):
                 with open(self.few_shot_cache_path, 'rb') as f:
                     self.few_shot_cache = pickle.load(f)
+                    logger.info(f"[INFO] Loaded {len(self.few_shot_cache)} items from few-shot cache.")
         except Exception as e:
             logger.warning(f"[WARNING] Cache load error: {e}")
             self.sentiment_cache = {}
@@ -90,6 +93,7 @@ class HybridRestaurantCache:
         try:
             with open(self.few_shot_cache_path, 'wb') as f:
                 pickle.dump(self.few_shot_cache, f)
+            logger.info(f"[INFO] Updated and saved few-shot cache (Total cached queries: {len(self.few_shot_cache)}).")
         except Exception as e:
             logger.warning(f"[WARNING] Few-shot cache save error: {e}")
 
@@ -141,13 +145,13 @@ class HybridRestaurantCache:
         if target_category in self.few_shot_examples:
             scored_examples = []
             query = f"{text} {target}"
-            query_embedding = self.embedding_model.encode([query])[0]
+            query_embedding = self.embedding_model.encode([query], show_progress_bar=False)[0]
             
             for example in self.few_shot_examples[target_category]:
                 if not isinstance(example, dict) or 'text' not in example:
                     continue
                 example_text = f"{example['text']} {example['target']}"
-                example_embedding = self.embedding_model.encode([example_text])[0]
+                example_embedding = self.embedding_model.encode([example_text], show_progress_bar=False)[0]
                 
                 similarity = np.dot(query_embedding, example_embedding) / (
                     np.linalg.norm(query_embedding) * np.linalg.norm(example_embedding)

@@ -36,9 +36,11 @@ def process_restaurant_sentiment_hybrid():
     
     input_csv_path = paths.get('input_csv', 'data/inputs/restaurants/restaurants_test_extracted.csv')
     output_csv_path = paths.get('output_csv', 'data/outputs/restaurant_sentiment_results.csv')
-    
+    logger.info("=" * 60)
     logger.info(f"[INFO] INITIATING HYBRID RESTAURANT SENTIMENT ANALYSIS")
+    logger.info("=" * 60)
     
+    logger.info(f"[INFO] Loading dataset from: {input_csv_path}")
     if not os.path.exists(input_csv_path):
         raise FileNotFoundError(f"Input file missing: {input_csv_path}")
         

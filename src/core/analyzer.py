@@ -34,8 +34,10 @@ class HybridRestaurantSentimentAnalyzer:
         if self.config.get('enable_self_reflection', True):
             self.reflection_engine = RestaurantSelfReflectionEngine(self.llm, self.config)
             reflection_text = self.reflection_engine.reflection_cache
+            logger.info(f"[INFO] Self-Reflection Engine initialized (Loaded {len(reflection_text)} chars of reflection rules).")
             
         self.prompt_engine = RestaurantPromptBuilder(self.config, reflection_text)
+        logger.info("[INFO] Prompt Builder initialized successfully.")
     
     def _calculate_text_sophistication(self, text: str) -> float:
         """Calculate text sophistication level for adaptive processing"""
