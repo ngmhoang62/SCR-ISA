@@ -39,8 +39,9 @@ def format_batch_results(batch_results, texts, targets, df, batch_start) -> list
             row_result = {
                 'Text': texts[i],
                 'Target': targets[i],
-                'Original_Sentiment': df.iloc[idx].get('label', 'N/A') if 'label' in df.columns else 'N/A',
+                'Original_Sentiment': df.iloc[idx].get('polarity', 'N/A') if 'polarity' in df.columns else 'N/A',
                 'Predicted_Sentiment': result.get('sentiment', 'Neutral'),
+                'Is_Implicit': df.iloc[idx].get('is_implicit', False) if 'is_implicit' in df.columns else False,
                 'Confidence': result.get('confidence', 50),
                 'Aspect_Focus': result.get('aspect_focus', '')[:100],
                 'Key_Phrases': ', '.join(result.get('key_phrases', [])[:3]),

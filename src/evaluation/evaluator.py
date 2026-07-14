@@ -1,48 +1,65 @@
-import re
-from typing import Any, Dict
+import pandas as pd
+from sklearn.metrics import f1_score
+import logging
+import os
 
-class Evaluator:
-    """Contains standard text metrics for comparing LLM predictions to ground truth labels."""
+logger = logging.getLogger(__name__)
+
+def evaluate_results(csv_path: str, output_txt_path: str):
+    """
+    Reads the predicted CSV results and calculates Macro-F1 score
+    for the overall dataset (SA) and implicit subset (ISA).
+    """
+    logger.info(f"[EVALUATION] Reading results from {csv_path}")
     
-    @staticmethod
-    def normalize_text(text: str) -> str:
-        """Removes duplicate whitespace, strips, and lowercases text."""
-        if not text:
-            return ""
-        return re.sub(r'\s+', ' ', text.strip().lower())
-
-    @classmethod
-    def extract_boxed_answer(cls, text: str) -> str:
-        """Extracts content inside a LaTeX \boxed{...} block.
+    try:
+        df = pd.read_csv(csv_path)
+    except Exception as e:
+        logger.error(f"[EVALUATION] Failed to read CSV: {e}")
+        return
         
-        Example: "The final answer is \\boxed{42}." -> "42"
-        """
-        if not text:
-            return ""
-        # Search for \boxed{...} recursively matching non-curly brace characters
-        match = re.search(r'\\boxed\{([^{}]*)\}', text)
-        if match:
-            return match.group(1).strip()
-        return text.strip()
-
-    @classmethod
-    def exact_match(cls, prediction: str, reference: str, use_boxed_extraction: bool = True) -> Dict[str, Any]:
-        """Checks if the prediction matches the reference target.
+    if 'Original_Sentiment' not in df.columns or 'Predicted_Sentiment' not in df.columns or 'Is_Implicit' not in df.columns:
+        logger.error("[EVALUATION] Missing required columns for evaluation.")
+        return
         
-        Args:
-            prediction: Raw output string from LLM.
-            reference: Target ground truth string.
-            use_boxed_extraction: Whether to extract \boxed{...} from prediction.
-        """
-        pred_to_eval = cls.extract_boxed_answer(prediction) if use_boxed_extraction else prediction
+    # Drop N/A or cases where Original_Sentiment wasn't known
+    df = df[df['Original_Sentiment'].notna() & (df['Original_Sentiment'] != 'N/A')]
+    
+    if len(df) == 0:
+        logger.warning("[EVALUATION] No valid ground truth labels found.")
+        return
         
-        normalized_pred = cls.normalize_text(pred_to_eval)
-        normalized_ref = cls.normalize_text(reference)
+    # Standardize to lowercase
+    y_true_all = df['Original_Sentiment'].astype(str).str.lower().tolist()
+    y_pred_all = df['Predicted_Sentiment'].astype(str).str.lower().tolist()
+    
+    # Calculate Macro-F1 SA
+    f1_sa = f1_score(y_true_all, y_pred_all, average='macro')
+    
+    # Filter for ISA
+    # Ensure Is_Implicit is parsed as boolean
+    implicit_df = df[df['Is_Implicit'].astype(str).str.lower() == 'true']
+    if len(implicit_df) > 0:
+        y_true_isa = implicit_df['Original_Sentiment'].astype(str).str.lower().tolist()
+        y_pred_isa = implicit_df['Predicted_Sentiment'].astype(str).str.lower().tolist()
+        f1_isa = f1_score(y_true_isa, y_pred_isa, average='macro')
+    else:
+        f1_isa = 0.0
         
-        is_match = normalized_pred == normalized_ref
+    report = (
+        "RESTAURANT DOMAIN EVALUATION RESULTS\n"
+        "====================================\n"
+        f"Total evaluated samples (SA): {len(df)}\n"
+        f"Implicit samples (ISA): {len(implicit_df)}\n\n"
+        f"Macro-F1 SA: {f1_sa:.4f}\n"
+        f"Macro-F1 ISA: {f1_isa:.4f}\n"
+    )
+    
+    logger.info(f"\n{report}")
+    
+    # Write to file
+    os.makedirs(os.path.dirname(output_txt_path), exist_ok=True)
+    with open(output_txt_path, 'w', encoding='utf-8') as f:
+        f.write(report)
         
-        return {
-            "extracted_prediction": pred_to_eval,
-            "ground_truth": reference,
-            "exact_match": is_match
-        }
+    logger.info(f"[EVALUATION] Report saved to {output_txt_path}")

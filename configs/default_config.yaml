@@ -7,7 +7,7 @@ restaurant:
   force_clear_sentiment_cache: false
   force_clear_reflection_cache: false
   force_clear_few_shot_cache: false
-  model: "gpt-4o-2024-11-20"
+  model: "gpt-4o"
   temperature: 0.1
   enable_embeddings: true
   embedding_model: "all-MiniLM-L6-v2"
@@ -16,19 +16,19 @@ restaurant:
   reflection_temperature: 0.3
   reflection_summary_length: 300
   paths:
-    log_dir: "logs"
+    log_dir: "logs/restaurants"
     input_csv: "data/inputs/restaurants/restaurants_test_extracted.csv"
-    output_csv: "data/outputs/restaurant_sentiment_results.csv"
-    few_shot_json: "data/few_shot/restaurant_examples.json"
-    prompts_base_system: "prompts/restaurant/system_prompts/base_system.txt"
-    prompts_analysis: "prompts/restaurant/user_prompts/analysis_prompt.txt"
-    prompts_reflection: "prompts/restaurant/restaurant_reflection.txt"
-    cache_sentiment_dir: "cache/sentiment"
-    cache_sentiment_file: "cache/sentiment/sentiment_cache.pkl"
-    cache_aspect_file: "cache/sentiment/aspect_patterns.pkl"
-    cache_few_shot_dir: "cache/few_shot"
-    cache_few_shot_file: "cache/few_shot/top_k_examples.pkl"
-    cache_reflection_dir: "cache/reflection"
-    cache_reflection_file: "cache/reflection/restaurant_role_reflection.txt"
-    debug_system_prompt: "data/outputs/debug_system_prompt.txt"
-    debug_user_prompt: "data/outputs/debug_user_prompt.txt"
+    output_csv: "data/outputs/restaurants/restaurant_sentiment_results.csv"
+    few_shot_json: "data/few_shot/restaurants/restaurant_examples.json"
+    prompts_base_system: "prompts/restaurants/system_prompts/base_system.txt"
+    prompts_analysis: "prompts/restaurants/user_prompts/analysis_prompt.txt"
+    prompts_reflection: "prompts/restaurants/restaurant_reflection.txt"
+    cache_sentiment_dir: "cache/sentiment/restaurants"
+    cache_sentiment_file: "cache/sentiment/restaurants/sentiment_cache.pkl"
+    cache_aspect_file: "cache/sentiment/restaurants/aspect_patterns.pkl"
+    cache_few_shot_dir: "cache/few_shot/restaurants"
+    cache_few_shot_file: "cache/few_shot/restaurants/top_k_examples.pkl"
+    cache_reflection_dir: "cache/reflection/restaurants"
+    cache_reflection_file: "cache/reflection/restaurants/restaurant_role_reflection.txt"
+    debug_system_prompt: "data/outputs/restaurants/debug_system_prompt.txt"
+    debug_user_prompt: "data/outputs/restaurants/debug_user_prompt.txt"

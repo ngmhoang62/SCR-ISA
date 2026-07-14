@@ -44,7 +44,7 @@ def process_restaurant_sentiment_hybrid():
         
     df = pd.read_csv(input_csv_path)
     
-    required_columns = ['text', 'target']
+    required_columns = ['text', 'aspect_term', 'polarity', 'is_implicit']
     for col in required_columns:
         if col not in df.columns:
             raise ValueError(f"Missing required column: {col}")
@@ -68,7 +68,7 @@ def process_restaurant_sentiment_hybrid():
               f"({batch_start}-{batch_end-1})")
               
         texts = batch_df['text'].astype(str).tolist()
-        targets = batch_df['target'].astype(str).tolist()
+        targets = batch_df['aspect_term'].astype(str).tolist()
         
         batch_results = analyzer.analyze_batch(texts, targets)
         
@@ -98,6 +98,11 @@ def process_restaurant_sentiment_hybrid():
             percentage = (count / len(results_df)) * 100
             avg_conf = results_df[results_df['Predicted_Sentiment'] == sentiment]['Confidence'].mean()
             logger.info(f"       {sentiment}: {count} reviews ({percentage:.1f}%), Avg Confidence: {avg_conf:.1f}")
+            
+    # Trigger Evaluation
+    from src.evaluation.evaluator import evaluate_results
+    eval_output_path = os.path.join(os.path.dirname(output_csv_path), "evaluation_results.txt")
+    evaluate_results(output_csv_path, eval_output_path)
             
     return results_df
 
