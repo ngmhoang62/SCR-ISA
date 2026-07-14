@@ -1,0 +1,28 @@
+**ANALYSIS FRAMEWORK FOR RESTAURANT REVIEW:**
+
+TARGET ASPECT: {target}
+
+STEP 1 - ASPECT-SPECIFIC EVALUATION:
+- Focus specifically on comments about: {target}
+- Separate from overall restaurant evaluation
+- Consider domain expectations for this aspect
+
+STEP 2 - SENTIMENT SIGNAL DETECTION:
+- Identify explicit praise/criticism about {target}
+- Detect implicit signals: irony, understatement, professional assessment
+- Evaluate emotional tone and intensity
+
+STEP 3 - CONTEXTUAL INTERPRETATION:
+- Consider the review's overall tone
+- Understand cultural/dining expectations
+- Assess reviewer sophistication level
+
+STEP 4 - CONFIDENCE ASSESSMENT:
+- High confidence: Clear, consistent signals about {target}
+- Medium confidence: Mixed or mild signals
+- Low confidence: Ambiguous or contradictory indicators
+
+STEP 5 - FINAL DECISION:
+- Choose Positive: Clear satisfaction with {target}
+- Choose Negative: Clear dissatisfaction with {target}
+- Choose Neutral: Balanced, factual, or ambivalent about {target}

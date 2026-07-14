@@ -1,0 +1,142 @@
+{
+    "food_quality": [
+        {
+            "text": "The steak was cooked to absolute perfection - tender, juicy, and bursting with flavor.",
+            "target": "food quality",
+            "analysis": {
+                "sentiment": "Positive",
+                "confidence": 96,
+                "signals": ["absolute perfection","tender, juicy","bursting with flavor","strong positive adjectives"],
+                "reason": "Extremely positive description with multiple enthusiastic compliments about steak preparation",
+                "aspect_intensity": "High",
+                "emotional_tone": "Enthusiastic"
+            }
+        },
+        {
+            "text": "The pasta was adequately cooked, neither under nor overdone, with a sauce that was acceptable.",
+            "target": "food quality",
+            "analysis": {
+                "sentiment": "Neutral",
+                "confidence": 88,
+                "signals": ["adequately cooked", "neither under nor overdone", "acceptable", "neutral descriptors"],
+                "reason": "Factual description without emotional evaluation, focuses on technical adequacy",
+                "aspect_intensity": "Low",
+                "emotional_tone": "Clinical"
+            }
+        },
+        {
+            "text": "One might charitably describe the fish as 'uninspired' - it arrived cold and underseasoned.",
+            "target": "food quality",
+            "analysis": {
+                "sentiment": "Negative",
+                "confidence": 92,
+                "signals": ["charitably describe", "uninspired", "cold", "underseasoned", "ironic phrasing"],
+                "reason": "Uses ironic understatement to strongly criticize temperature and seasoning issues",
+                "aspect_intensity": "High",
+                "emotional_tone": "Sarcastic"
+            }
+        }
+    ],
+    "service": [
+        {
+            "text": "Service was prompt and attentive without being intrusive - just the right balance.",
+            "target": "service",
+            "analysis": {
+                "sentiment": "Positive",
+                "confidence": 94,
+                "signals": ["prompt and attentive", "right balance", "positive professional assessment"],
+                "reason": "Positive evaluation of service professionalism with specific praise for balance",
+                "aspect_intensity": "Medium",
+                "emotional_tone": "Appreciative"
+            }
+        },
+        {
+            "text": "The waitstaff performed their duties in a manner consistent with restaurant industry standards.",
+            "target": "service",
+            "analysis": {
+                "sentiment": "Neutral",
+                "confidence": 85,
+                "signals": ["consistent with standards", "performed duties", "professional framing"],
+                "reason": "Neutral, professional assessment stating service meets basic industry standards",
+                "aspect_intensity": "Low",
+                "emotional_tone": "Professional"
+            }
+        },
+        {
+            "text": "One could admire the consistency with which our requests were met with polite indifference.",
+            "target": "service",
+            "analysis": {
+                "sentiment": "Negative",
+                "confidence": 90,
+                "signals": ["admire the consistency", "polite indifference", "ironic compliment", "contrast"],
+                "reason": "Ironically praises consistency to criticize indifferent service attitude",
+                "aspect_intensity": "Medium",
+                "emotional_tone": "Ironic"
+            }
+        }
+    ],
+    "ambiance_value": [
+        {
+            "text": "At these prices, one might reasonably expect a dining experience rather than merely a meal.",
+            "target": "value for money",
+            "analysis": {
+                "sentiment": "Negative",
+                "confidence": 87,
+                "signals": ["at these prices", "might reasonably expect", "rather than merely", "implied criticism"],
+                "reason": "Implies disappointment with value by contrasting price with experience quality",
+                "aspect_intensity": "Medium",
+                "emotional_tone": "Critical"
+            }
+        },
+        {
+            "text": "The ambiance achieves a pleasant equilibrium between formal dining and casual comfort.",
+            "target": "ambiance",
+            "analysis": {
+                "sentiment": "Neutral",
+                "confidence": 82,
+                "signals": ["achieves equilibrium", "pleasant", "balanced description"],
+                "reason": "Neutral, balanced description of ambiance without strong emotional evaluation",
+                "aspect_intensity": "Low",
+                "emotional_tone": "Analytical"
+            }
+        },
+        {
+            "text": "For what it costs, the portions were generous and the ingredients clearly premium.",
+            "target": "value for money",
+            "analysis": {
+                "sentiment": "Positive",
+                "confidence": 89,
+                "signals": ["for what it costs", "generous portions", "premium ingredients", "value assessment"],
+                "reason": "Positive value assessment linking price to portion size and ingredient quality",
+                "aspect_intensity": "Medium",
+                "emotional_tone": "Satisfied"
+            }
+        }
+    ],
+    "expert_implicit": [
+        {
+            "text": "The establishment has mastered the art of delivering precisely what one might expect, no surprises, no disappointments.",
+            "target": "overall experience",
+            "analysis": {
+                "sentiment": "Neutral",
+                "confidence": 91,
+                "signals": ["mastered the art", "precisely what one might expect", "no surprises", "paradoxical excellence"],
+                "reason": "Praises consistency and predictability while implying lack of excitement or exceptional experience",
+                "aspect_intensity": "Medium",
+                "emotional_tone": "Philosophical"
+            }
+        },
+        {
+            "text": "One is tempted to describe the culinary approach as technically flawless yet emotionally sterile.",
+            "target": "culinary creativity",
+            "analysis": {
+                "sentiment": "Negative",
+                "confidence": 88,
+                "signals": ["tempted to describe", "technically flawless", "emotionally sterile", "contrasting critique"],
+                "reason": "Acknowledges technical skill while criticizing lack of emotional connection or creativity",
+                "aspect_intensity": "High",
+                "emotional_tone": "Disappointed"
+            }
+        }
+    ]
+}

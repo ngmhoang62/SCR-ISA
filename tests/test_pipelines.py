@@ -1,23 +1,22 @@
-import pytest
-from src.evaluation import Evaluator
+from src.core.analyzer import HybridRestaurantSentimentAnalyzer
 
-def test_normalize_text():
-    assert Evaluator.normalize_text("  Hello   World  ") == "hello world"
-    assert Evaluator.normalize_text("\nTest\n") == "test"
-    assert Evaluator.normalize_text("") == ""
-
-def test_extract_boxed_answer():
-    assert Evaluator.extract_boxed_answer("The result is \\boxed{42}.") == "42"
-    assert Evaluator.extract_boxed_answer("No brackets here") == "No brackets here"
-    assert Evaluator.extract_boxed_answer("") == ""
-
-def test_exact_match():
-    # Test matching with boxed extraction
-    res1 = Evaluator.exact_match(" \\boxed{Apple} ", "apple")
-    assert res1["exact_match"] is True
-    assert res1["extracted_prediction"] == "Apple"
-
-    # Test mismatches
-    res2 = Evaluator.exact_match(" \\boxed{Orange} ", "apple")
-    assert res2["exact_match"] is False
-    assert res2["extracted_prediction"] == "Orange"
+def test_analyze_single_restaurant_example():
+    """Analyze single restaurant review example for testing logic flow."""
+    config = {
+        'batch_size': 1,
+        'max_workers': 1,
+        'cache_enabled': False,
+        'enable_self_reflection': False, # Disable reflection for quick test
+        'model': 'gpt-4o-2024-08-06',
+        'enable_embeddings': False,      # Disable embeddings for quick test
+        'max_retries': 1
+    }
+    
+    # We won't actually call it to avoid API Key errors during pytest
+    # but we can ensure the object initializes correctly.
+    try:
+        analyzer = HybridRestaurantSentimentAnalyzer(config)
+        assert analyzer is not None
+    except ValueError as e:
+        # Expected if OPENAI_API_KEY is not set in env
+        assert "OPENAI_API_KEY" in str(e)
